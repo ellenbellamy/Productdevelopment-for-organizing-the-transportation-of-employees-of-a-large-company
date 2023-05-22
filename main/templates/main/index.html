@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Главная страница</title>
+</head>
+<body>
+<h1>Введите необходимые данные</h1>
+<form method="post" action="visual">
+    {% csrf_token %}
+    <p>Введите количество транспортных средств</p><input name="n_clusters" type="number" />
+    <p>Введите адрес офиса компании, куда необходимо доставить сотрудников</p><input name="start" type="text" />
+    <div id="parentId">
+<div>
+    <p>Введите адрес или координаты места, откуда необходимо забрать сотрудника</p>
+<nobr><input name="adress" type="text" style="width:300px;" />
+<a style="color:red;" onclick="return deleteField(this)" href="#">удалить</a>
+<a style="color:green;" onclick="return addField()" href="#">добавить</a>
+</nobr>
+</div>
+</div>
+
+
+<script>
+var countOfFields = 1;
+var curFieldNameId = 1;
+var maxFieldLimit = 25;
+function deleteField(a) {
+    if (countOfFields > 1) {
+// Получаем доступ к ДИВу, содержащему поле
+    var contDiv = a.parentNode;
+// Удаляем этот ДИВ из DOM-дерева
+    contDiv.parentNode.removeChild(contDiv);
+// Уменьшаем значение текущего числа полей
+    countOfFields--;
+    }
+// Возвращаем false, чтобы не было перехода по сслыке
+    return false;
+}
+function addField() {
+// Проверяем, не достигло ли число полей максимума
+    if (countOfFields >= maxFieldLimit) {
+    alert("Число полей достигло своего максимума = " + maxFieldLimit);
+    return false;
+    }
+// Увеличиваем текущее значение числа полей
+countOfFields++;
+// Увеличиваем ID
+curFieldNameId++;
+// Создаем элемент ДИВ
+var div = document.createElement("div");
+// Добавляем HTML-контент с пом. свойства innerHTML
+div.innerHTML = '<nobr><input name="adress" type=\"text\" style=\"width:300px;\" /> <a style=\"color:red;\" onclick=\"return deleteField(this)\" href=\"#\">удалить</a> <a style=\"color:green;\" onclick=\"return addField()\" href=\"#\">добавить</a></nobr>';
+// Добавляем новый узел в конец списка полей
+document.getElementById("parentId").appendChild(div);
+// Возвращаем false, чтобы не было перехода по сслыке
+return false;
+}
+//console.log(Array.from(document.querySelectorAll("#parentId div").forEach(div => {const input = div.querySelector("[name='address']"), select = div.querySelector("select option:checked").value;})));
+function getArray() {
+    const Adresses = Array.from(document.querySelectorAll("#parentId div").forEach(div => {const input = div.querySelector("[name='adress']")}));
+    return Adresses;
+}
+</script>
+
+<input type="submit" onclick="getArray()" value="Send">
+</form>
+</body>
+</html>

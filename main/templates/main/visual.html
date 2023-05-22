@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        ymaps.ready(init);
+
+        function init() {
+            x = {{ points_x }};
+            y = {{ points_y }};
+            n = {{ number_of_clusters }}
+            yellowCoords = []
+            var myMap = new ymaps.Map("map", {
+                    center: [60.0031532, 30.2970835],
+                    zoom: 9
+                }, {
+                    searchControlProvider: 'yandex#search'
+                }),
+                yellowCollection = new ymaps.GeoObjectCollection(null, {
+                    preset: 'islands#yellowIcon'
+                });
+            for (var i = 0, l = x.length; i < l; i++) {
+                yellowCoords.push([x[i], y[i]]);
+            }
+
+
+            for (var i = 0, l = yellowCoords.length; i < l; i++) {
+                yellowCollection.add(new ymaps.Placemark(yellowCoords[i]));
+            }
+
+            myMap.geoObjects.add(yellowCollection);
+
+        }
+
+
+    </script>
+
+
+
+</head>
+<body>
+<!-- Область показа карты -->
+<div id="map" style="width: 100%; height: 300px"></div>
+<div id="res">{% autoescape off%}{{ result }}{% endautoescape %}</div>
+
+
+
+</body>
+
+
+</html>
